@@ -2,6 +2,9 @@
 
 //IIFE
 (function () {
+  const fromStorage = localStorage.getItem('todos');
+  const todoList = fromStorage ? JSON.parse(fromStorage) : [];
+
   document
     .querySelector('[data-todos-form]')
     .addEventListener('submit', handleAddTodo);
@@ -9,22 +12,37 @@
     .querySelector('[data-todos-list]')
     .addEventListener('click', handleDeleteTodo);
 
+  displayTodos();
+
   function handleAddTodo(e) {
     e.preventDefault();
     const title = getTodoTitleFromForm(e.target);
-    // addToTodoList(title);
-    const todoItem = buildTodoItem(title);
-    displayTodoItem(todoItem);
+    addToTodoList(title);
+    displayTodos();
   }
 
   function handleDeleteTodo(e) {
     const btn = e.target.closest('[data-delete-todo]');
-    if(!btn) {
-    // if(!e.target.dataset.deleteTodo) {
+    if (!btn) {
       return;
     }
-    const item = btn.closest('li');
-    item.remove();
+
+    const index = todoList.findIndex((todo) => todo.id === btn.dataset.todoId);
+    todoList.splice(index, 1);
+    displayTodos();
+    localStorage.setItem('todos', JSON.stringify(todoList));
+  }
+
+  function addToTodoList(title) {
+    const newTodo = {
+      id: crypto.randomUUID(),
+      title,
+      completed: false,
+    };
+
+    todoList.push(newTodo);
+
+    localStorage.setItem('todos', JSON.stringify(todoList));
   }
 
   function getTodoTitleFromForm(form) {
@@ -32,25 +50,34 @@
     return data.get('title');
   }
 
-  function buildTodoItem(title) {
-    const item = document.createElement('li');
-    const label = document.createElement('label');
-    const check = document.createElement('input');
-    const deleteBtn = document.createElement('button');
+  function buildTodoItems() {
+    const fragment = document.createDocumentFragment();
+    for (const todo of todoList) {
+      const item = document.createElement('li');
+      const label = document.createElement('label');
+      const check = document.createElement('input');
+      const deleteBtn = document.createElement('button');
 
-    deleteBtn.type = 'button';
-    deleteBtn.innerHTML = '&times;';
-    deleteBtn.dataset.deleteTodo = true;
-    check.type = 'checkbox';
+      deleteBtn.type = 'button';
+      deleteBtn.innerHTML = '&times;';
+      deleteBtn.dataset.deleteTodo = true;
+      deleteBtn.dataset.todoId = todo.id;
 
-    label.append(check, title);
-    item.append(label, deleteBtn);
+      check.type = 'checkbox';
+      check.checked = todo.completed;
 
-    return item;
+      label.append(check, todo.title);
+      item.append(label, deleteBtn);
+      fragment.append(item);
+    }
+    return fragment;
   }
 
-  function displayTodoItem(item) {
-    document.querySelector('[data-todos-list]').append(item);
+  function displayTodos() {
+    const items = buildTodoItems();
+    const list = document.querySelector('[data-todos-list]');
+    list.innerHTML = '';
+    list.append(items);
   }
 
   // <li>

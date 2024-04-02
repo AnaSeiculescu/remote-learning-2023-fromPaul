@@ -71,9 +71,10 @@
 async function getWeatherData() {
   let weatherData;
   try {
-    weatherData = await fetch(
+    const res = await fetch(
       'https://api.openweathermap.org/data/2.5/weather?q=Brasov,RO&appid=1d260c5f4897b555ae217809965ad963'
-    ).then((res) => res.json())
+    );
+    weatherData = await res.json();
   } catch(error) {
     console.warn(error);
     return;
@@ -84,7 +85,6 @@ async function getWeatherData() {
 
 async function displayWeather(weatherData) {
   weatherData = await weatherData;
-  console.log(weatherData);
 
   const elems = document.querySelectorAll('[data-weather]');
   for (const elem of elems) {

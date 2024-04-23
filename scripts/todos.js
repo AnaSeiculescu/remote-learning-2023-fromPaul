@@ -63,6 +63,8 @@
       deleteBtn.dataset.deleteTodo = true;
       deleteBtn.dataset.todoId = todo.id;
 
+      console.log("deleteBtn este: ", deleteBtn);
+
       check.type = 'checkbox';
       check.checked = todo.completed;
 

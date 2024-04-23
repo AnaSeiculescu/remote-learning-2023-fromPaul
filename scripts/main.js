@@ -87,8 +87,12 @@ async function displayWeather(weatherData) {
   weatherData = await weatherData;
 
   const elems = document.querySelectorAll('[data-weather]');
+  console.log("elems este", elems);
+
   for (const elem of elems) {
+    console.log("elem este ", elem);
     const param = elem.dataset.weather;
+    console.log("param este ", param);
     let value = weatherData.main[param];
     if (param.startsWith('temp')) {
       value = (value - 273.15).toFixed(1);

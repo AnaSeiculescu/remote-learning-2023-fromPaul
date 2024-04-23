@@ -1,0 +1,14 @@
+{
+  "name": "remote-learning-2023-frompaul",
+  "version": "1.0.0",
+  "description": "My remote learning app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ana Seiculescu",
+  "license": "ISC",
+  "dependencies": {
+    "json-server": "^1.0.0-alpha.23"
+  }
+}

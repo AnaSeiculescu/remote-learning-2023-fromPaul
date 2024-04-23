@@ -1,5 +1,7 @@
 'use strict';
 
+//Paul's Homework
+
 (function () {
   const playerWinText = 'Player wins!';
   const computerWinText = 'Computer wins!';

@@ -4,11 +4,12 @@
   "description": "My remote learning app",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "json-server db.json -p 1575"
   },
   "author": "Ana Seiculescu",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "json-server": "^1.0.0-alpha.23"
   }
 }

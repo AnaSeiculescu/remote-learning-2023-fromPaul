@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "json-server db.json -p 1575"
+    "start": "json-server db.json -p 3081"
   },
   "author": "Ana Seiculescu",
   "license": "ISC",

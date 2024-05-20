@@ -18,7 +18,20 @@
   displayTodos();
 
   async function handleUpdateTodo(e) {
+    const todoId = e.target.value;
+    const isCompleted = e.target.checked;
+    
+    const res = await fetch(`${apiUrl}/${todoId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body : `{"completed": ${isCompleted}}`,
+    });
 
+    if(!res.ok) {
+      e.target.checked = !e.target.checked;
+    }
   }
 
   async function handleAddTodo(e) {
@@ -74,6 +87,7 @@
 
       check.type = 'checkbox';
       check.checked = todo.completed;
+      check.value = todo.id;
 
       label.append(check, todo.title);
       item.append(label, deleteBtn);

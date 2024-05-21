@@ -14,6 +14,8 @@ function myMap(transformerFunc) {
   return res;
 }
 
+console.log(strArr.map(Number).reduce((sum, num) => sum + num));
+
 Array.prototype.myMap = myMap;
 
 console.log('Typecast: ', typeCastAndAdd(strArr));
@@ -42,7 +44,7 @@ si returneaza un array cu toate valorile corespunzatoare cheii din obiectele din
 const demoArr = [
   { id: 1, color: 'red', height: 15, width: 20, distance: 10 },
   { id: 2, color: 'green', height: 5, width: 30, distance: 15 },
-  { id: 3, color: 'turqoize', height: 7, width: 9, distance: 8 },
+  { id: 3, color: 'turquoise', height: 7, width: 9, distance: 8 },
   { id: 4, color: 'blue', height: 2, width: 3, distance: 3 },
   { id: 5, color: 'red', height: 10, width: 10, distance: 2 },
   { id: 6, color: 'crimson', height: 7, width: 8, distance: 16 },
@@ -112,39 +114,117 @@ function findColor(arr, color) {
   return arr.find((item) => item.color === color);
 }
 /*
-6. Sa se scrie o functie care returneaza true daca toate elementele din array au aria >= 10, false altfel.
+6. Sa se scrie o functie care returneaza true daca toate elementele din array au 
+aria >= parametrul transmis, false altfel.
 */
-console.log('Areas are Bigger: ', areasAreBigger(demoArr, 5));
+console.log('Areas are Bigger: ', areasAreBigger(demoArr, 7));
 
-function areasAreBigger(arr, area) {}
+function areasAreBigger(arr, area) {
+  return arr.every((item) => item.width * item.height >= area);
+}
 
 /*
-7. Sa se scrie o functie care returneaza true daca cel putin unul din elementele array-ului are culoarea 'green';
+7. Sa se scrie o functie care returneaza true daca cel putin unul din elementele 
+array-ului are culoarea 'green';
 */
 console.log('At Least One: ', atLeastOneIsOfColor(demoArr, 'green'));
 
-function atLeastOneIsOfColor(arr, color) {}
+function atLeastOneIsOfColor(arr, color) {
+  // return !!arr.find((item) => item.color === color);
+  // return arr.map((item) => item.color).includes(color);
+
+  return arr.some((item) => item.color === color);
+}
 
 /*
 8. Sa se scrie o functie care returneaza distanta totala (suma distantelor elementelor)
 */
 console.log('Sum of distances: ', sumOfDistances(demoArr));
 
-function sumOfDistances(arr) {}
+function sumOfDistances(arr) {
+  // let sum = 0;
+  // for(const item of arr) {
+  //   sum += item.distance;
+  // }
+  // return sum;
+  return arr.reduce((sum, item) => sum + item.distance, 0);
+}
 
 /*
-9. Sa se scrie o functie care returneaza un obiect in care se numara de cate ori apare fiecare culoare in parte in array-ul de obiecte. {red: 2, blue: 1, etc...}
+9. Sa se scrie o functie care returneaza un obiect in care se numara 
+de cate ori apare fiecare culoare in parte in array-ul de obiecte. {red: 2, blue: 1, etc...}
 */
 console.log('Number of colors: ', noColors(demoArr));
 
-function noColors(arr) {}
+function noColors(arr) {
+  // const colorCount = {};
+  // for(const item of arr) {
+  //   if(item.color in colorCount) {
+  //     colorCount[item.color]++;
+  //   } else {
+  //     colorCount[item.color] = 1;
+  //   }
+  // }
+  // return colorCount;
+
+  // return arr.reduce((colorCount, item) => {
+  //   if(item.color in colorCount) {
+  //     colorCount[item.color]++;
+  //   } else {
+  //     colorCount[item.color] = 1;
+  //   }
+  //   return colorCount;
+  // },  {});
+
+  // return arr.map(item => item.color).reduce((colorCount, color) => {
+  //   colorCount[color] = (colorCount[color] || 0) + 1;
+  //   return colorCount;
+  // }, {});
+
+  const colorCount = {};
+  for (const item of arr) {
+    colorCount[item.color] = (colorCount[item.color] || 0) + 1;
+  }
+  return colorCount;
+}
 
 /*
-10. Sa se scrie o functie care returneaza un array cu toate elementele care au o culoare unica. Oricare element dupa primul care are o culoare care s-ar repeta nu este inclus in array.
+10. Sa se scrie o functie care returneaza un array cu toate elementele care au o 
+culoare unica. Oricare element dupa primul care are o culoare care s-ar repeta nu 
+este inclus in array.
 */
 console.log('Unique Colors: ', uniqueColors(demoArr));
 
-function uniqueColors(arr) {}
+function uniqueColors(arr) {
+  const seenColors = new Set();
+  const res = [];
+  for (const item of arr) {
+    if (!seenColors.has(item.color)) {
+      res.push(item);
+      seenColors.add(item.color);
+    }
+  }
+  return res;
+
+  // const seenColors = [];
+  // const res = [];
+  // arr.forEach(item => {
+  //   if(!seenColors.includes(item.color)) {
+  //     seenColors.push(item.color);
+  //     res.push(item);
+  //   }
+  // });
+  // return res;
+
+  //   return Object.values(arr.reduce((acc, item) => {
+  //     if(!acc[item.color]) {
+  //  if(!(item.color in acc)) {
+  //       acc[item.color] = item;
+  //       return acc;
+  //     }
+  //     return acc;
+  //   }, {}));
+}
 
 /*
 [
@@ -162,10 +242,13 @@ function uniqueColors(arr) {}
 let a = 5,
   b = 8;
 
+[a, b] = [b, a];
+
 console.log('A:', a, 'B:', b);
 
 /*
-12. Folosind array-ul de mai jos, vreau sa se obtina o variabila care contine un array de obiecte strcturat astfel:
+12. Folosind array-ul de mai jos, vreau sa se obtina o variabila care contine un array 
+de obiecte strcturat astfel:
 [
   {subject: 'Chemistry', time: '9AM', teacher: 'Mr. Darnick'},
   ...
@@ -177,7 +260,18 @@ const classes = [
   ['Math', '11:30AM', 'Mrs. Vitalis'],
 ];
 
-// console.log("Classes: ", objClasses);
+// const objClasses = classes.map(([subject, time, teacher]) => ({
+//   subject,
+//   time,
+//   teacher,
+// }));
+
+const objClasses = classes.map((arrClass) => {
+  const [subject, time, teacher] = arrClass;
+  return { subject, time, teacher };
+});
+
+console.log('Classes: ', objClasses);
 
 const result1 = [
   { id: 1, name: 'Sandra', type: 'user', username: 'sandra' },
@@ -188,13 +282,46 @@ const result1 = [
 
 const result2 = [
   { id: 2, name: 'John', email: 'johnny@example.com' },
-  { id: 4, name: 'Bobby', email: 'bobby@example.com' },
+  { id: 4, name: 'Paul', email: 'bobby@example.com' },
 ];
 
 const props = ['id', 'name'];
 
-function arrayIntersection(arr1, arr2, props) {}
+function allPropsMatch(it1, it2, props) {
+  let condition = true;
+  for(const prop of props) {
+    // condition = condition && (it[prop] === item[prop]);
+    if(it1[prop] !== it2[prop]) {
+      condition = false;  
+    }
+  }
+  return condition;
+}
 
-function arrayIntersection2(arr1, arr2) {}
+function getItemWherePropsMatch(arr, item, props) {
+  return arr.find((it) => allPropsMatch(it, item, props));
+}
 
-console.log(arrayIntersection2(result1, result2, props));
+function customIntersection(arr1, arr2, props) {
+  const res = [];
+  for (const item of arr1) {
+    const item2 = getItemWherePropsMatch(arr2, item, props)
+    if (item2) {
+      res.push({...item, ...item2});
+    }
+  }
+  return res;
+}
+
+function idIntersection(arr1, arr2) {
+  const res = [];
+  for (const item of arr1) {
+    const item2 = arr2.find((it) => it.id === item.id)
+    if (item2) {
+      res.push({...item, ...item2});
+    }
+  }
+  return res;
+}
+
+console.log(idIntersection(result1, result2, props));
